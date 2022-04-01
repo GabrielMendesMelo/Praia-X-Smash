@@ -79,11 +79,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   min: -1
   max: 0
-  velocidade: 5
+  velocidade: 4
   multiplicadorSubindo: 1.5
   multiplicadorDescendo: 2
-  minTempoNaTela: 0.2
-  maxTempoNaTela: 1
+  minTempoNaTela: 0
+  maxTempoNaTela: 2
+  modelo: {fileID: 3368656821970322002}
+  materiaisOpcoes:
+  - {fileID: 2100000, guid: b9774d426d0140846846c1799dfd7aec, type: 2}
+  - {fileID: 2100000, guid: e00142ca1f7190f49b0fe654f6c2d51d, type: 2}
+  - {fileID: 2100000, guid: 070cff160aa50214e956e8dcb7847822, type: 2}
+  - {fileID: 2100000, guid: b2f3b7c229ecde64997be1cd17690a29, type: 2}
+  - {fileID: 2100000, guid: 32c9dad899edcfa458b4f5401aeccdbd, type: 2}
+  - {fileID: 2100000, guid: e4e50c515d346754286e6b01899f9877, type: 2}
   acertouFx: {fileID: 6236533574750117248, guid: e282379e023795a44af4b971c9f7ae4f,
     type: 3}
 --- !u!136 &306676500809821189
@@ -181,6 +189,11 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: -1934268713938070520, guid: 196e5b4cd8d3fe340a1548ac26455384,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: b9774d426d0140846846c1799dfd7aec, type: 2}
     - target: {fileID: 919132149155446097, guid: 196e5b4cd8d3fe340a1548ac26455384,
         type: 3}
       propertyPath: m_Name
@@ -201,6 +214,12 @@ PrefabInstance:
 --- !u!4 &173932641677475616 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 196e5b4cd8d3fe340a1548ac26455384,
+    type: 3}
+  m_PrefabInstance: {fileID: 424279192939174091}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &3368656821970322002 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3124521936383007385, guid: 196e5b4cd8d3fe340a1548ac26455384,
     type: 3}
   m_PrefabInstance: {fileID: 424279192939174091}
   m_PrefabAsset: {fileID: 0}

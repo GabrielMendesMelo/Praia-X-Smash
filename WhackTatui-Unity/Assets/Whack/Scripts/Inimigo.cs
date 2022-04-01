@@ -9,6 +9,9 @@ public class Inimigo : MonoBehaviour
     [SerializeField] private float minTempoNaTela;
     [SerializeField] private float maxTempoNaTela;
 
+    [SerializeField] private GameObject modelo;
+    [SerializeField] private Material[] materiaisOpcoes;
+
     [SerializeField] private GameObject acertouFx;
 
     private int direcao = 1;
@@ -21,6 +24,8 @@ public class Inimigo : MonoBehaviour
 
     private void Awake()
     {
+        modelo.GetComponent<SkinnedMeshRenderer>().material = materiaisOpcoes[Random.Range(0, materiaisOpcoes.Length)];
+        
         anim = gameObject.GetComponent<Animator>();
 
         anim.SetFloat("subindoOffset", Random.Range(0f, 1f));

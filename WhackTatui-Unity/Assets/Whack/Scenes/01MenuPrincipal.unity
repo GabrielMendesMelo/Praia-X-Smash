@@ -344,8 +344,8 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 66180265}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 157.39928, y: -376.95007, z: -399.9651}
+  m_LocalRotation: {x: -0.09237063, y: 0, z: 0, w: 0.9957247}
+  m_LocalPosition: {x: -0.88, y: -16.32206, z: -11.414885}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -1613,10 +1613,10 @@ MonoBehaviour:
   m_FillRect: {fileID: 282872236}
   m_HandleRect: {fileID: 1769216812}
   m_Direction: 0
-  m_MinValue: 0
-  m_MaxValue: 1
+  m_MinValue: -75
+  m_MaxValue: 20
   m_WholeNumbers: 0
-  m_Value: 1
+  m_Value: 20
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -2556,8 +2556,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -93.411, y: 0}
-  m_SizeDelta: {x: 66.69, y: 0}
+  m_AnchoredPosition: {x: -136.97, y: 0}
+  m_SizeDelta: {x: 153.81, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &685011374
 MonoBehaviour:
@@ -2579,7 +2579,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Ultra
+  m_text: Muito Baixa
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -2606,7 +2606,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 30.65
+  m_fontSize: 29.1
   m_fontSizeBase: 26
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -5092,7 +5092,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6901f84c287168741a37578aa7d4dde7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  jogadores: []
   conteudoRanking: {fileID: 2138311092}
   conteudoPrefab: {fileID: 7370240011007860024, guid: a7e145bc8ba91ca469556162bdccd373,
     type: 3}
@@ -5108,6 +5107,8 @@ MonoBehaviour:
   btnComecarClip: {fileID: 0}
   "btnAvan\xE7arClip": {fileID: 0}
   btnVoltarClip: {fileID: 0}
+  volumeSlider: {fileID: 499065436}
+  graficosDd: {fileID: 2143452365}
 --- !u!1 &1276437286
 GameObject:
   m_ObjectHideFlags: 0
@@ -7616,10 +7617,10 @@ RectTransform:
   m_Father: {fileID: 1884835069}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 92.81, y: 1.129}
-  m_SizeDelta: {x: -306.125, y: 31.617}
+  m_AnchorMin: {x: 1, y: 0.5}
+  m_AnchorMax: {x: 1, y: 0.5}
+  m_AnchoredPosition: {x: -115.177, y: 0}
+  m_SizeDelta: {x: 230.354, y: 57.617}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &2143452365
 MonoBehaviour:
@@ -7671,13 +7672,15 @@ MonoBehaviour:
   m_Value: 0
   m_Options:
     m_Options:
-    - m_Text: Ultra
+    - m_Text: Muito Baixa
       m_Image: {fileID: 0}
-    - m_Text: Alta
+    - m_Text: Baixa
       m_Image: {fileID: 0}
     - m_Text: "M\xE9dia"
       m_Image: {fileID: 0}
-    - m_Text: Baixa
+    - m_Text: Alta
+      m_Image: {fileID: 0}
+    - m_Text: Muito Alta
       m_Image: {fileID: 0}
   m_OnValueChanged:
     m_PersistentCalls:

@@ -6,12 +6,14 @@ using UnityEngine.Networking;
 using System;
 using System.Text;
 using UnityEngine.Audio;
+using UnityEngine.UI;
+using TMPro;
 
 public class MenuPrincipal : MonoBehaviour
 {
-    [SerializeField] private List<GameObject> jogadores = new List<GameObject>();
     [SerializeField] private GameObject conteudoRanking;
     [SerializeField] private GameObject conteudoPrefab;
+    private List<GameObject> jogadores = new List<GameObject>();
 
     [SerializeField] private GameObject txtSemInternet;
     [SerializeField] private GameObject txtRecarregar;
@@ -34,6 +36,9 @@ public class MenuPrincipal : MonoBehaviour
     [SerializeField] private AudioClip btnAvançarClip;
     [SerializeField] private AudioClip btnVoltarClip;
 
+    [SerializeField] private Slider volumeSlider;
+    [SerializeField] private TMP_Dropdown graficosDd;
+
     private void Awake()
     {
         CarregarRanking();
@@ -48,6 +53,17 @@ public class MenuPrincipal : MonoBehaviour
         btnsSrc = gameObjAudioSource.AddComponent<AudioSource>();
         btnsSrc.outputAudioMixerGroup = audioMixer;
         btnsSrc.loop = false;
+    }
+
+    private void Start()
+    {
+        PreferenciasUsuario.Set(audioMixer);
+
+        volumeSlider.value = PreferenciasUsuario.volume;
+        volumeSlider.onValueChanged.AddListener(delegate { MudancaDeVOlume(); });
+
+        graficosDd.value = PreferenciasUsuario.grafico;
+        graficosDd.onValueChanged.AddListener(delegate { MudancaDeGrafico(); });
     }
 
     private void Update()
@@ -175,5 +191,15 @@ public class MenuPrincipal : MonoBehaviour
         iR.Id = id + 1;
         iR.Nome = nome;
         iR.Pontos = pontos;
+    }
+
+    private void MudancaDeVOlume()
+    {
+        PreferenciasUsuario.volume = volumeSlider.value;
+    }
+
+    private void MudancaDeGrafico()
+    {
+        PreferenciasUsuario.grafico = graficosDd.value;
     }
 }

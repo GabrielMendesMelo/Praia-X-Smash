@@ -23,9 +23,11 @@ public class Jogador : MonoBehaviour
     [SerializeField] private TMP_InputField txtNomeRanking;
 
     [SerializeField] private Slider volumeSlider;
+    [SerializeField] private TMP_Dropdown graficosDd;
 
     public static int Pontos { get; set; }
 
+    private bool tempoFinal = false;
     private bool jogoAcabou = false;
     private bool carregarRanking = false;
 
@@ -40,7 +42,11 @@ public class Jogador : MonoBehaviour
         txtTempo = gameObjectTempo.GetComponent<TextMeshProUGUI>();
         txtTempo.text = tempo.ToString();
 
+        volumeSlider.value = PreferenciasUsuario.volume;
         volumeSlider.onValueChanged.AddListener(delegate { MudancaDeVOlume(); });
+
+        graficosDd.value = PreferenciasUsuario.grafico;
+        graficosDd.onValueChanged.AddListener(delegate { MudancaDeGrafico(); });
 
         Fase.Rodando = true;
     }
@@ -54,6 +60,12 @@ public class Jogador : MonoBehaviour
             if ((int)tempo == 0)
             {
                 Finalizar();
+            }
+
+            if (tempo <= 11 && !tempoFinal)
+            {
+                txtTempo.color = Color.red;
+                tempoFinal = true;
             }
 
             if (tempo <= 5 && !carregarRanking)
@@ -127,7 +139,12 @@ public class Jogador : MonoBehaviour
 
     private void MudancaDeVOlume()
     {
-        PreferenciasUsuario.Prefs.volume = volumeSlider.value;
+        PreferenciasUsuario.volume = volumeSlider.value;
+    }
+
+    private void MudancaDeGrafico()
+    {
+        PreferenciasUsuario.grafico = graficosDd.value;
     }
 
     #endregion

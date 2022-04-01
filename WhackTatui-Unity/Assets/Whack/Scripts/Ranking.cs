@@ -9,24 +9,6 @@ using UnityEngine;
 
 public static class Ranking
 {
-    /*
-    private Ranking() { }
-
-    private static Ranking instancia;
-    public static Ranking Instancia
-    {
-        get
-        {
-            Debug.Log(instancia);
-            if (instancia == null)
-            {
-                instancia = new Ranking();
-            }
-            return instancia;
-        }
-    }
-    */
-
     [Serializable]
     public class Jogador
     {
@@ -67,12 +49,6 @@ public static class Ranking
     {
         if (jogadores.Count > MAX)
         {
-            /*
-            for (int i = MAX; i < jogadores.Count; i++)
-            {
-                jogadores.RemoveAt(i);
-            }
-            */
             jogadores.RemoveAt(jogadores.Count - 1);
         }
 
@@ -82,7 +58,6 @@ public static class Ranking
         {
             if (task.IsCompleted)
             {
-                Debug.Log("SALVOU");
                 Carregar();
             }
             else
