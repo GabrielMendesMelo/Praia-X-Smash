@@ -1,5 +1,7 @@
+using System.Collections;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Audio;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
@@ -22,8 +24,26 @@ public class Jogador : MonoBehaviour
 
     [SerializeField] private TMP_InputField txtNomeRanking;
 
-    [SerializeField] private Slider volumeSlider;
+    [SerializeField] private Slider musicaSlider;
+    [SerializeField] private Slider sfxSlider;
     [SerializeField] private TMP_Dropdown graficosDd;
+
+    [SerializeField] private AudioMixerGroup sfxMixer;
+    [SerializeField] private GameObject gameObjAudioSource;
+    
+    [SerializeField] private AudioClip sfxPause;
+    [SerializeField] private AudioClip sfxAvancar;
+    [SerializeField] private AudioClip sfxVoltar;
+    [SerializeField] private AudioClip sfxTempoAcabando;
+    private AudioSource sfxSrc;
+    private AudioSource tempoAcabandoSrc;
+
+    [SerializeField] private GameObject menuPrincipal, menuOpcoes, menuLoad;
+
+    [SerializeField] private Slider loadSlider;
+    [SerializeField] private TextMeshProUGUI loadTxt;
+
+    [SerializeField] private Fase fase;
 
     public static int Pontos { get; set; }
 
@@ -42,13 +62,27 @@ public class Jogador : MonoBehaviour
         txtTempo = gameObjectTempo.GetComponent<TextMeshProUGUI>();
         txtTempo.text = tempo.ToString();
 
-        volumeSlider.value = PreferenciasUsuario.volume;
-        volumeSlider.onValueChanged.AddListener(delegate { MudancaDeVOlume(); });
+        musicaSlider.value = PreferenciasUsuario.musica;
+        musicaSlider.onValueChanged.AddListener(delegate { MudancaDeMusica(); });
+
+        sfxSlider.value = PreferenciasUsuario.sfx;
+        sfxSlider.onValueChanged.AddListener(delegate { MudancaDeSfx(); });
 
         graficosDd.value = PreferenciasUsuario.grafico;
         graficosDd.onValueChanged.AddListener(delegate { MudancaDeGrafico(); });
 
         Fase.Rodando = true;
+
+        sfxSrc = gameObjAudioSource.AddComponent<AudioSource>();
+        sfxSrc.outputAudioMixerGroup = sfxMixer;
+        sfxSrc.volume = PreferenciasUsuario.sfx;
+        sfxSrc.playOnAwake = false;
+
+        tempoAcabandoSrc = gameObjAudioSource.AddComponent<AudioSource>();
+        tempoAcabandoSrc.outputAudioMixerGroup = sfxMixer;
+        tempoAcabandoSrc.volume = PreferenciasUsuario.sfx;
+        tempoAcabandoSrc.playOnAwake = false;
+        tempoAcabandoSrc.clip = sfxTempoAcabando;
     }
 
     private void Update()
@@ -66,6 +100,7 @@ public class Jogador : MonoBehaviour
             {
                 txtTempo.color = Color.red;
                 tempoFinal = true;
+                StartCoroutine(TempoFinal());
             }
 
             if (tempo <= 5 && !carregarRanking)
@@ -85,6 +120,7 @@ public class Jogador : MonoBehaviour
 
     private void Finalizar()
     {
+        fase.Finalizar();
         jogoAcabou = true;
         Fase.Rodando = false;
         gameOver.SetActive(true);
@@ -93,8 +129,10 @@ public class Jogador : MonoBehaviour
 
     #region Interface
 
-    private void Pausar()
+    public void Pausar()
     {
+        sfxSrc.clip = sfxPause;
+        sfxSrc.Play();
         if (Fase.Rodando)
         {
             Fase.Rodando = false;
@@ -108,23 +146,55 @@ public class Jogador : MonoBehaviour
         }
     }
 
-    private void VoltarProJogo()
+    public void VoltarProJogo()
     {
+        sfxSrc.clip = sfxPause;
+        sfxSrc.Play();
         menuPause.SetActive(false);
         Fase.Rodando = true;
     }
 
-    private void RecomecarPartida()
+    public void AbrirOpcoes()
     {
-        SalvarRanking();
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+        sfxSrc.clip = sfxAvancar;
+        sfxSrc.Play();
+        menuOpcoes.SetActive(true);
+        menuPrincipal.SetActive(false);
     }
 
-    private void Sair()
+    private IEnumerator TempoFinal()
     {
+        tempoAcabandoSrc.Play();
+        yield return new WaitForSeconds(1);
+    }
+
+    public void VoltarMenu()
+    {
+        sfxSrc.clip = sfxVoltar;
+        sfxSrc.Play();
+        menuPrincipal.SetActive(true);
+        menuOpcoes.SetActive(false);
+    }
+
+    public void RecomecarPartida()
+    {
+        CarregarNovaCena(SceneManager.GetActiveScene().buildIndex);
+    }
+
+    public void Sair()
+    {
+        CarregarNovaCena(SceneManager.GetActiveScene().buildIndex - 1);
+    }
+
+    private void CarregarNovaCena(int id)
+    {
+        sfxSrc.clip = sfxAvancar;
+        sfxSrc.Play();
+
+        menuLoad.SetActive(true);
+
         SalvarRanking();
-        Fase.Rodando = false;
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex - 1);
+        StartCoroutine(CarregarCena.LoadAsync(id, loadSlider, loadTxt));
     }
 
     private void SalvarRanking()
@@ -136,10 +206,13 @@ public class Jogador : MonoBehaviour
             Ranking.Adicionar(Pontos, nome);
         }
     }
-
-    private void MudancaDeVOlume()
+    private void MudancaDeMusica()
     {
-        PreferenciasUsuario.volume = volumeSlider.value;
+        PreferenciasUsuario.musica = musicaSlider.value;
+    }
+    private void MudancaDeSfx()
+    {
+        PreferenciasUsuario.sfx = sfxSlider.value;
     }
 
     private void MudancaDeGrafico()

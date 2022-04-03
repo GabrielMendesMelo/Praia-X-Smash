@@ -94,6 +94,12 @@ MonoBehaviour:
   - {fileID: 2100000, guid: e4e50c515d346754286e6b01899f9877, type: 2}
   acertouFx: {fileID: 6236533574750117248, guid: e282379e023795a44af4b971c9f7ae4f,
     type: 3}
+  sfxMixer: {fileID: -6957290219835697292, guid: 1d6c7fde56e26e445b0cbd0473f9b5e7,
+    type: 2}
+  sfxApareceu:
+  - {fileID: 8300000, guid: 2fc06b4b9fd849c48a433d71f9fbe685, type: 3}
+  sfxAcertou:
+  - {fileID: 8300000, guid: 01af47686af62174a9933c3383720bb9, type: 3}
 --- !u!136 &306676500809821189
 CapsuleCollider:
   m_ObjectHideFlags: 0

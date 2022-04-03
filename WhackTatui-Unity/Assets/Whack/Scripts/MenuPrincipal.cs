@@ -20,24 +20,28 @@ public class MenuPrincipal : MonoBehaviour
 
     [SerializeField] private float distanciaY;
 
-    [SerializeField] private AudioMixerGroup audioMixer;
+    [SerializeField] private AudioMixerGroup musicaMixer;
 
     [SerializeField] private GameObject gameObjAudioSource;
     [SerializeField] private AudioClip musicaClip;
     private AudioSource musicaSrc;
-    
-    [SerializeField] private float musicaMaxVolume;
-    
+      
     [SerializeField] private bool fadeIn;
     [SerializeField] private float tempoFadeIn;
+
+    [SerializeField] private AudioMixerGroup sfxMixer;
 
     private AudioSource btnsSrc;
     [SerializeField] private AudioClip btnComecarClip;
     [SerializeField] private AudioClip btnAvançarClip;
     [SerializeField] private AudioClip btnVoltarClip;
 
-    [SerializeField] private Slider volumeSlider;
+    [SerializeField] private Slider musicaSlider;
+    [SerializeField] private Slider sfxSlider;
     [SerializeField] private TMP_Dropdown graficosDd;
+
+    [SerializeField] private Slider loadSlider;
+    [SerializeField] private TextMeshProUGUI loadTxt;
 
     private void Awake()
     {
@@ -45,22 +49,24 @@ public class MenuPrincipal : MonoBehaviour
 
         musicaSrc = gameObjAudioSource.GetComponent<AudioSource>();
         musicaSrc.clip = musicaClip;
-        musicaSrc.outputAudioMixerGroup = audioMixer;
-        musicaSrc.volume = fadeIn ? 0 : musicaMaxVolume;
+        musicaSrc.outputAudioMixerGroup = musicaMixer;
+        musicaSrc.volume = fadeIn ? 0 : PreferenciasUsuario.musica;
 
         musicaSrc.Play();
 
         btnsSrc = gameObjAudioSource.AddComponent<AudioSource>();
-        btnsSrc.outputAudioMixerGroup = audioMixer;
-        btnsSrc.loop = false;
+        btnsSrc.outputAudioMixerGroup = sfxMixer;
     }
 
     private void Start()
     {
-        PreferenciasUsuario.Set(audioMixer);
+        PreferenciasUsuario.Set(musicaMixer, sfxMixer);
 
-        volumeSlider.value = PreferenciasUsuario.volume;
-        volumeSlider.onValueChanged.AddListener(delegate { MudancaDeVOlume(); });
+        musicaSlider.value = PreferenciasUsuario.musica;
+        musicaSlider.onValueChanged.AddListener(delegate { MudancaDeMusica(); });
+
+        sfxSlider.value = PreferenciasUsuario.sfx;
+        sfxSlider.onValueChanged.AddListener(delegate { MudancaDeSfx(); });
 
         graficosDd.value = PreferenciasUsuario.grafico;
         graficosDd.onValueChanged.AddListener(delegate { MudancaDeGrafico(); });
@@ -68,7 +74,7 @@ public class MenuPrincipal : MonoBehaviour
 
     private void Update()
     {
-        if (fadeIn && musicaSrc.volume <= musicaMaxVolume)
+        if (fadeIn && musicaSrc.volume <= PreferenciasUsuario.musica)
         {
             musicaSrc.volume += (float)(Time.deltaTime / tempoFadeIn);
         }
@@ -76,16 +82,22 @@ public class MenuPrincipal : MonoBehaviour
     
     public void ComecarJogo()
     {
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
+        btnsSrc.clip = btnComecarClip;
+        btnsSrc.Play();
+        StartCoroutine(CarregarCena.LoadAsync(SceneManager.GetActiveScene().buildIndex + 1, loadSlider, loadTxt));
     }
 
     public void AbrirMenu(GameObject menu)
     {
+        btnsSrc.clip = btnAvançarClip;
+        btnsSrc.Play();
         menu.SetActive(true);
     }
 
     public void FecharMenu(GameObject menu)
     {
+        btnsSrc.clip = btnVoltarClip;
+        btnsSrc.Play();
         menu.SetActive(false);
     }
 
@@ -193,9 +205,13 @@ public class MenuPrincipal : MonoBehaviour
         iR.Pontos = pontos;
     }
 
-    private void MudancaDeVOlume()
+    private void MudancaDeMusica()
     {
-        PreferenciasUsuario.volume = volumeSlider.value;
+        PreferenciasUsuario.musica = musicaSlider.value;
+    }
+    private void MudancaDeSfx()
+    {
+        PreferenciasUsuario.sfx = sfxSlider.value;
     }
 
     private void MudancaDeGrafico()

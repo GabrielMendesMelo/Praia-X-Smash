@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.Audio;
 
 public class Fase : MonoBehaviour
 {
@@ -6,11 +7,13 @@ public class Fase : MonoBehaviour
     [SerializeField, Min(0)] private float tempoMaxCriacao;
     [SerializeField, Min(1)] private int maxInimigos;
 
+    [SerializeField] private AudioMixerGroup musicaMixer;
+
     [SerializeField] private GameObject gameObjAudioSource;
     [SerializeField] private AudioClip musicaClip;
+    [SerializeField] private AudioClip gameOverClip;
+
     private AudioSource musicaSrc;
-    
-    [SerializeField] private float musicaVolume;
 
     private float tempo = 0;
 
@@ -28,7 +31,8 @@ public class Fase : MonoBehaviour
     {
         musicaSrc = gameObjAudioSource.GetComponent<AudioSource>();
         musicaSrc.clip = musicaClip;
-        musicaSrc.volume = musicaVolume;
+        musicaSrc.outputAudioMixerGroup = musicaMixer;
+        musicaSrc.volume = PreferenciasUsuario.musica;
         musicaSrc.loop = true;
 
         musicaSrc.Play();
@@ -56,5 +60,13 @@ public class Fase : MonoBehaviour
                 }
             }
         }
+    }
+
+    public void Finalizar()
+    {
+        musicaSrc.Stop();
+        musicaSrc.loop = false;
+        musicaSrc.clip = gameOverClip;
+        musicaSrc.Play();
     }
 }

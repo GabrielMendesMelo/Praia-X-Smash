@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.Audio;
 
 public class Inimigo : MonoBehaviour
 {
@@ -14,6 +15,11 @@ public class Inimigo : MonoBehaviour
 
     [SerializeField] private GameObject acertouFx;
 
+    [SerializeField] private AudioMixerGroup sfxMixer;
+    [SerializeField] private AudioClip[] sfxApareceu;
+    [SerializeField] private AudioClip[] sfxAcertou;
+    private AudioSource[] sfxSrcs = new AudioSource[2];
+
     private int direcao = 1;
     private bool parado = false;
     private float tempoNaTela = 0;
@@ -24,6 +30,16 @@ public class Inimigo : MonoBehaviour
 
     private void Awake()
     {
+        for (int i = 0; i < sfxSrcs.Length; i++)
+        {
+            sfxSrcs[i] = gameObject.AddComponent<AudioSource>();
+            sfxSrcs[i].outputAudioMixerGroup = sfxMixer;
+            sfxSrcs[i].volume = PreferenciasUsuario.sfx;
+        }
+
+        sfxSrcs[0].clip = sfxApareceu[Random.Range(0, sfxApareceu.Length)];
+        sfxSrcs[1].clip = sfxAcertou[Random.Range(0, sfxAcertou.Length)];
+
         modelo.GetComponent<SkinnedMeshRenderer>().material = materiaisOpcoes[Random.Range(0, materiaisOpcoes.Length)];
         
         anim = gameObject.GetComponent<Animator>();
@@ -32,6 +48,11 @@ public class Inimigo : MonoBehaviour
         anim.SetFloat("idleOffset", Random.Range(0f, 1f));
 
         maxTempoNaTela = Random.Range(minTempoNaTela, maxTempoNaTela);
+    }
+
+    private void Start()
+    {
+        sfxSrcs[0].Play();
     }
 
     void Update()
@@ -78,6 +99,8 @@ public class Inimigo : MonoBehaviour
 
     private void Acertar()
     {
+        sfxSrcs[1].Play();
+
         anim.SetTrigger("acertou");
 
         Jogador.Pontos++;

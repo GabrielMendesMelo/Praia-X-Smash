@@ -8,12 +8,14 @@ public static class PreferenciasUsuario
     [Serializable]
     public class Prefs
     {
-        public float volume;
+        public float musica;
+        public float sfx;
         public int grafico;
 
-        public Prefs(float volume, int grafico)
+        public Prefs(float musica, float sfx, int grafico)
         {
-            this.volume = volume;
+            this.musica = musica;
+            this.sfx = sfx;
             this.grafico = grafico;
         }
     }
@@ -22,18 +24,34 @@ public static class PreferenciasUsuario
     private static string txt;
     private static Prefs prefs;
 
-    private static AudioMixer mixer;
+    private static AudioMixer musicaMixer;
+    private static AudioMixer sfxMixer;
 
-    public static float volume
+    public static float musica
     {
         get
         {
-            return prefs.volume;
+            return prefs.musica;
         }
         set
         {
-            prefs.volume = value;
-            mixer.SetFloat("Volume", prefs.volume);
+            prefs.musica = value;
+            musicaMixer.SetFloat("Musica", prefs.musica);
+
+            Salvar();
+        }
+    }
+
+    public static float sfx
+    {
+        get
+        {
+            return prefs.sfx;
+        }
+        set
+        {
+            prefs.sfx = value;
+            sfxMixer.SetFloat("SFX", prefs.sfx);
 
             Salvar();
         }
@@ -54,13 +72,14 @@ public static class PreferenciasUsuario
         }
     }
 
-    public static void Set(AudioMixerGroup audioMixerGroup)
+    public static void Set(AudioMixerGroup musicaMixerGroup, AudioMixerGroup sfxMixerGroup)
     {
-        mixer = audioMixerGroup.audioMixer;
+        musicaMixer = musicaMixerGroup.audioMixer;
+        sfxMixer = sfxMixerGroup.audioMixer;
 
         if (!File.Exists(caminho))
         {
-            prefs = new Prefs(20, QualitySettings.GetQualityLevel());
+            prefs = new Prefs(20, 20, QualitySettings.GetQualityLevel());
 
             txt = JsonUtility.ToJson(prefs);
         }
@@ -71,7 +90,8 @@ public static class PreferenciasUsuario
             prefs = JsonUtility.FromJson<Prefs>(txt);
         }
 
-        mixer.SetFloat("Volume", prefs.volume);        
+        musicaMixer.SetFloat("Musica", prefs.musica);
+        sfxMixer.SetFloat("SFX", prefs.sfx);
         QualitySettings.SetQualityLevel(prefs.grafico);
 
         File.WriteAllText(caminho, txt);
