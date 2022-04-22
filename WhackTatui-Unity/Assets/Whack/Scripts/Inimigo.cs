@@ -20,9 +20,21 @@ public class Inimigo : MonoBehaviour
     [SerializeField] private AudioClip[] sfxAcertou;
     private AudioSource[] sfxSrcs = new AudioSource[2];
 
+    [SerializeField] private GameObject ponto;
+    private GameObject pt;
+    [SerializeField] private float minVelocidadePt, maxVelocidadePt;
+    private float velocidadePt;
+    private Color[] corPt = new Color[]
+    {
+        Color.cyan,
+        Color.yellow
+    };
+
     private int direcao = 1;
     private bool parado = false;
     private float tempoNaTela = 0;
+
+    private bool acertou = false;
 
     private GameObject buraco;
 
@@ -34,7 +46,6 @@ public class Inimigo : MonoBehaviour
         {
             sfxSrcs[i] = gameObject.AddComponent<AudioSource>();
             sfxSrcs[i].outputAudioMixerGroup = sfxMixer;
-            sfxSrcs[i].volume = PreferenciasUsuario.sfx;
         }
 
         sfxSrcs[0].clip = sfxApareceu[Random.Range(0, sfxApareceu.Length)];
@@ -48,6 +59,8 @@ public class Inimigo : MonoBehaviour
         anim.SetFloat("idleOffset", Random.Range(0f, 1f));
 
         maxTempoNaTela = Random.Range(minTempoNaTela, maxTempoNaTela);
+
+        velocidadePt = Random.Range(minVelocidadePt, maxVelocidadePt);
     }
 
     private void Start()
@@ -57,8 +70,44 @@ public class Inimigo : MonoBehaviour
 
     void Update()
     {
+        if (pt != null)
+        {
+            pt.transform.Translate(Vector3.up * velocidadePt * Time.deltaTime);
+            pt.transform.localScale -= Vector3.one * velocidadePt * Time.deltaTime;
+            if (pt.transform.localScale.x <= 0)
+            {
+                Destroy(pt);
+            }
+        }
+
         if (Fase.Rodando)
         {
+            if (Input.touchCount == 1)
+            {
+                Ray ray = Camera.main.ScreenPointToRay(Input.GetTouch(0).position);
+                RaycastHit hit;
+                if (Physics.Raycast(ray, out hit))
+                {
+                    if (hit.transform.position == gameObject.transform.position)
+                    {
+                        Acertar();                        
+                    }
+                }
+            }
+
+            if (Input.GetButtonDown("Fire1"))
+            {
+                Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+                RaycastHit hit;
+                if (Physics.Raycast(ray, out hit))
+                {
+                    if (hit.transform.position == gameObject.transform.position)
+                    {
+                        Acertar();
+                    }
+                }
+            }
+
             if (transform.position.y >= max && tempoNaTela == 0)
             {
                 transform.position = new Vector3(transform.position.x, max, transform.position.z);
@@ -69,6 +118,13 @@ public class Inimigo : MonoBehaviour
             {
                 buraco.GetComponentInChildren<MeshRenderer>().enabled = true;
                 buraco.GetComponent<Buraco>().Liberar();
+                
+                if (!acertou)
+                {
+                    Combo.Set();
+                }
+
+                if (pt != null) Destroy(pt);
                 Destroy(gameObject);
             }
 
@@ -91,19 +147,44 @@ public class Inimigo : MonoBehaviour
     {
         this.buraco = buraco;
     }
-
-    private void OnMouseDown()
-    {
-        Acertar();
-    }
-
+    
     private void Acertar()
     {
+        acertou = true;
+
+        TextMesh ptTxt;
+
+        switch (Combo.Multiplicador)
+        {
+            case float n when n >= 5 && n < 10:
+                pt = Instantiate(ponto, new Vector3(transform.position.x, transform.position.y + 0.2f, transform.position.z), Quaternion.identity);
+                ptTxt = pt.GetComponent<TextMesh>();
+                ptTxt.text = Mathf.FloorToInt(Combo.Multiplicador).ToString();
+
+                ptTxt.color = corPt[0];
+                pt.transform.localScale *= 1.1f;
+                velocidadePt *= 1.5f;
+                break;
+
+            case float n when n >= 10:
+                pt = Instantiate(ponto, new Vector3(transform.position.x, transform.position.y + 0.2f, transform.position.z), Quaternion.identity);
+                ptTxt = pt.GetComponent<TextMesh>();
+                ptTxt.text = Mathf.FloorToInt(Combo.Multiplicador).ToString();
+
+                ptTxt.color = corPt[1];
+                pt.transform.localScale *= 1.6f;
+                velocidadePt *= 2f;
+                break;                    
+        }
+        if (Combo.Multiplicador >= 30) { }
+
+        Combo.Aumentar();
+
         sfxSrcs[1].Play();
 
         anim.SetTrigger("acertou");
 
-        Jogador.Pontos++;
+        Jogador.Pontos += Mathf.FloorToInt(Combo.Multiplicador);
         Jogador.AtualizarPontos();
 
         max = transform.position.y;

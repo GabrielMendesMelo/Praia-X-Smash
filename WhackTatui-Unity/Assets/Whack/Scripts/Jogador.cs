@@ -1,4 +1,3 @@
-using System.Collections;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Audio;
@@ -35,6 +34,7 @@ public class Jogador : MonoBehaviour
     [SerializeField] private AudioClip sfxAvancar;
     [SerializeField] private AudioClip sfxVoltar;
     [SerializeField] private AudioClip sfxTempoAcabando;
+    [SerializeField] private AudioClip gameOverClip;
     private AudioSource sfxSrc;
     private AudioSource tempoAcabandoSrc;
 
@@ -45,11 +45,14 @@ public class Jogador : MonoBehaviour
 
     [SerializeField] private Fase fase;
 
+    [SerializeField] private GameObject carregandoRanking;
+
+    private int fimDeJogoCenaId = -1;
+
     public static int Pontos { get; set; }
 
     private bool tempoFinal = false;
     private bool jogoAcabou = false;
-    private bool carregarRanking = false;
 
     private void Awake()
     {
@@ -75,12 +78,10 @@ public class Jogador : MonoBehaviour
 
         sfxSrc = gameObjAudioSource.AddComponent<AudioSource>();
         sfxSrc.outputAudioMixerGroup = sfxMixer;
-        sfxSrc.volume = PreferenciasUsuario.sfx;
         sfxSrc.playOnAwake = false;
 
         tempoAcabandoSrc = gameObjAudioSource.AddComponent<AudioSource>();
         tempoAcabandoSrc.outputAudioMixerGroup = sfxMixer;
-        tempoAcabandoSrc.volume = PreferenciasUsuario.sfx;
         tempoAcabandoSrc.playOnAwake = false;
         tempoAcabandoSrc.clip = sfxTempoAcabando;
     }
@@ -100,15 +101,9 @@ public class Jogador : MonoBehaviour
             {
                 txtTempo.color = Color.red;
                 tempoFinal = true;
-                StartCoroutine(TempoFinal());
+                TempoFinal();
             }
 
-            if (tempo <= 5 && !carregarRanking)
-            {
-                Ranking.Carregar();
-                carregarRanking = true;
-            } 
-            
             txtTempo.text = ((int)tempo).ToString();
         }
     }
@@ -120,6 +115,8 @@ public class Jogador : MonoBehaviour
 
     private void Finalizar()
     {
+        CancelInvoke();
+        tempoAcabandoSrc.PlayOneShot(gameOverClip);
         fase.Finalizar();
         jogoAcabou = true;
         Fase.Rodando = false;
@@ -131,6 +128,7 @@ public class Jogador : MonoBehaviour
 
     public void Pausar()
     {
+        CancelInvoke();
         sfxSrc.clip = sfxPause;
         sfxSrc.Play();
         if (Fase.Rodando)
@@ -152,6 +150,11 @@ public class Jogador : MonoBehaviour
         sfxSrc.Play();
         menuPause.SetActive(false);
         Fase.Rodando = true;
+
+        if (tempo <= 11)
+        {
+            Invoke("TempoFinal", 1);
+        }
     }
 
     public void AbrirOpcoes()
@@ -162,10 +165,10 @@ public class Jogador : MonoBehaviour
         menuPrincipal.SetActive(false);
     }
 
-    private IEnumerator TempoFinal()
+    private void TempoFinal()
     {
         tempoAcabandoSrc.Play();
-        yield return new WaitForSeconds(1);
+        Invoke("TempoFinal", 1);
     }
 
     public void VoltarMenu()
@@ -188,13 +191,25 @@ public class Jogador : MonoBehaviour
 
     private void CarregarNovaCena(int id)
     {
+        Combo.Set();
+
+        carregandoRanking.SetActive(true);
+        Ranking.Carregar(Continuar);
+
         sfxSrc.clip = sfxAvancar;
         sfxSrc.Play();
+
+        fimDeJogoCenaId = id;
+    }
+
+    private void Continuar()
+    {
+        carregandoRanking.SetActive(false);
 
         menuLoad.SetActive(true);
 
         SalvarRanking();
-        StartCoroutine(CarregarCena.LoadAsync(id, loadSlider, loadTxt));
+        StartCoroutine(CarregarCena.LoadAsync(fimDeJogoCenaId, loadSlider, loadTxt));
     }
 
     private void SalvarRanking()

@@ -2,6 +2,7 @@ using System;
 using System.IO;
 using UnityEngine;
 using UnityEngine.Audio;
+using UnityStandardAssets.Water;
 
 public static class PreferenciasUsuario
 {
@@ -26,6 +27,7 @@ public static class PreferenciasUsuario
 
     private static AudioMixer musicaMixer;
     private static AudioMixer sfxMixer;
+    private static WaterBase waterBase;
 
     public static float musica
     {
@@ -36,7 +38,7 @@ public static class PreferenciasUsuario
         set
         {
             prefs.musica = value;
-            musicaMixer.SetFloat("Musica", prefs.musica);
+            musicaMixer.SetFloat("Musica", Mathf.Log10(prefs.musica) * 20);
 
             Salvar();
         }
@@ -51,7 +53,7 @@ public static class PreferenciasUsuario
         set
         {
             prefs.sfx = value;
-            sfxMixer.SetFloat("SFX", prefs.sfx);
+            sfxMixer.SetFloat("SFX", Mathf.Log10(prefs.sfx) * 20);
 
             Salvar();
         }
@@ -67,19 +69,21 @@ public static class PreferenciasUsuario
         {
             prefs.grafico = value;
             QualitySettings.SetQualityLevel(prefs.grafico);
+            waterBase.waterQuality = (WaterQuality)prefs.grafico;
 
             Salvar();
         }
     }
 
-    public static void Set(AudioMixerGroup musicaMixerGroup, AudioMixerGroup sfxMixerGroup)
+    public static void Set(AudioMixerGroup musicaMixerGroup, AudioMixerGroup sfxMixerGroup, GameObject water)
     {
         musicaMixer = musicaMixerGroup.audioMixer;
         sfxMixer = sfxMixerGroup.audioMixer;
+        waterBase = water.GetComponent<WaterBase>();
 
         if (!File.Exists(caminho))
         {
-            prefs = new Prefs(20, 20, QualitySettings.GetQualityLevel());
+            prefs = new Prefs(1, 1, QualitySettings.GetQualityLevel());
 
             txt = JsonUtility.ToJson(prefs);
         }
@@ -90,8 +94,8 @@ public static class PreferenciasUsuario
             prefs = JsonUtility.FromJson<Prefs>(txt);
         }
 
-        musicaMixer.SetFloat("Musica", prefs.musica);
-        sfxMixer.SetFloat("SFX", prefs.sfx);
+        musicaMixer.SetFloat("Musica", Mathf.Log10(prefs.musica) * 20);
+        sfxMixer.SetFloat("SFX", Mathf.Log10(prefs.sfx) * 20);
         QualitySettings.SetQualityLevel(prefs.grafico);
 
         File.WriteAllText(caminho, txt);

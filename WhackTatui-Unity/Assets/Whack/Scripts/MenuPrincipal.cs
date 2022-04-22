@@ -42,6 +42,7 @@ public class MenuPrincipal : MonoBehaviour
 
     [SerializeField] private Slider loadSlider;
     [SerializeField] private TextMeshProUGUI loadTxt;
+    [SerializeField] private GameObject mar;
 
     private void Awake()
     {
@@ -50,17 +51,19 @@ public class MenuPrincipal : MonoBehaviour
         musicaSrc = gameObjAudioSource.GetComponent<AudioSource>();
         musicaSrc.clip = musicaClip;
         musicaSrc.outputAudioMixerGroup = musicaMixer;
-        musicaSrc.volume = fadeIn ? 0 : PreferenciasUsuario.musica;
+        musicaSrc.volume = fadeIn ? 0 : 1;
 
         musicaSrc.Play();
 
         btnsSrc = gameObjAudioSource.AddComponent<AudioSource>();
         btnsSrc.outputAudioMixerGroup = sfxMixer;
+
+        Combo.Set();
     }
 
     private void Start()
     {
-        PreferenciasUsuario.Set(musicaMixer, sfxMixer);
+        PreferenciasUsuario.Set(musicaMixer, sfxMixer, mar);
 
         musicaSlider.value = PreferenciasUsuario.musica;
         musicaSlider.onValueChanged.AddListener(delegate { MudancaDeMusica(); });
@@ -74,7 +77,7 @@ public class MenuPrincipal : MonoBehaviour
 
     private void Update()
     {
-        if (fadeIn && musicaSrc.volume <= PreferenciasUsuario.musica)
+        if (fadeIn && musicaSrc.volume <= 1)
         {
             musicaSrc.volume += (float)(Time.deltaTime / tempoFadeIn);
         }
@@ -111,23 +114,6 @@ public class MenuPrincipal : MonoBehaviour
         Application.Quit();
     }
 
-    #region APAGAR
-    public void APAGAR()
-    {
-        int pt = UnityEngine.Random.Range(320, 450);
-        string letras = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-
-        StringBuilder nome = new StringBuilder();
-        for (int i = 0; i < 3; i++)
-        {
-            nome.Append(letras[UnityEngine.Random.Range(0, letras.Length)]);
-        }
-        Ranking.Adicionar(pt, nome.ToString());
-
-        AtualizarRanking();
-    }
-    #endregion
-
     private IEnumerator ChecarConexao(Action<bool> action)
     {
         UnityWebRequest request = new UnityWebRequest("http://google.com");
@@ -151,7 +137,7 @@ public class MenuPrincipal : MonoBehaviour
                 txtSemInternet.SetActive(false);
                 conteudoRanking.SetActive(true);
              
-                Ranking.Carregar();
+                Ranking.Carregar(null);
 
                 if (Ranking.jogadores == null) txtRecarregar.SetActive(true);
                 else txtRecarregar.SetActive(false);
@@ -164,6 +150,13 @@ public class MenuPrincipal : MonoBehaviour
                 throw new Exception("Conexão falhou!");
             }
         }));
+    }
+
+    public void BtnAtualizar()
+    {
+        AtualizarRanking();
+        btnsSrc.clip = btnAvançarClip;
+        btnsSrc.Play();
     }
 
     public void AtualizarRanking()

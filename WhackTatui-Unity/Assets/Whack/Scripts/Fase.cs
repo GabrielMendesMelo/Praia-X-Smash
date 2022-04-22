@@ -10,14 +10,18 @@ public class Fase : MonoBehaviour
     [SerializeField] private AudioMixerGroup musicaMixer;
 
     [SerializeField] private GameObject gameObjAudioSource;
-    [SerializeField] private AudioClip musicaClip;
-    [SerializeField] private AudioClip gameOverClip;
+    [SerializeField] private AudioClip[] musicaClip;
+    //[SerializeField] private AudioClip gameOverClip;
+    [SerializeField] private AudioClip musicaGameOver;
+    private float timerGameOver = 0f;
 
     private AudioSource musicaSrc;
 
     private float tempo = 0;
 
     public static bool Rodando = true;
+
+    private bool gameOver = false;
 
     private Buraco[] buracos
     {
@@ -30,9 +34,8 @@ public class Fase : MonoBehaviour
     private void Awake()
     {
         musicaSrc = gameObjAudioSource.GetComponent<AudioSource>();
-        musicaSrc.clip = musicaClip;
+        musicaSrc.clip = musicaClip[Random.Range(0, musicaClip.Length)];
         musicaSrc.outputAudioMixerGroup = musicaMixer;
-        musicaSrc.volume = PreferenciasUsuario.musica;
         musicaSrc.loop = true;
 
         musicaSrc.Play();
@@ -60,13 +63,34 @@ public class Fase : MonoBehaviour
                 }
             }
         }
+
+        if (gameOver)
+        {
+            timerGameOver += Time.deltaTime;
+            if (timerGameOver > 5)
+            {
+                if (musicaSrc.loop)
+                {
+                    if (musicaSrc.volume <= 1)
+                    {
+                        musicaSrc.volume += Time.deltaTime / 30.0f;
+                    }
+                    return;
+                }
+                musicaSrc.clip = musicaGameOver;
+                musicaSrc.loop = true;
+                musicaSrc.volume = 0;
+                musicaSrc.Play();
+            }
+        }
     }
 
     public void Finalizar()
     {
+        gameOver = true;
         musicaSrc.Stop();
         musicaSrc.loop = false;
-        musicaSrc.clip = gameOverClip;
-        musicaSrc.Play();
+        //musicaSrc.clip = gameOverClip;
+        //musicaSrc.Play();
     }
 }

@@ -1,4 +1,3 @@
-using System;
 using UnityEngine;
 
 namespace UnityStandardAssets.Water
@@ -14,7 +13,7 @@ namespace UnityStandardAssets.Water
     public class WaterBase : MonoBehaviour
     {
         public Material sharedMaterial;
-        public WaterQuality waterQuality = WaterQuality.High;
+        public WaterQuality waterQuality;// = WaterQuality.High;
         public bool edgeBlend = true;
 
 

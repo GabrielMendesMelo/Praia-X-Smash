@@ -83,7 +83,7 @@ MonoBehaviour:
   multiplicadorSubindo: 1.5
   multiplicadorDescendo: 2
   minTempoNaTela: 0
-  maxTempoNaTela: 2
+  maxTempoNaTela: 3
   modelo: {fileID: 3368656821970322002}
   materiaisOpcoes:
   - {fileID: 2100000, guid: b9774d426d0140846846c1799dfd7aec, type: 2}
@@ -97,9 +97,14 @@ MonoBehaviour:
   sfxMixer: {fileID: -6957290219835697292, guid: 1d6c7fde56e26e445b0cbd0473f9b5e7,
     type: 2}
   sfxApareceu:
-  - {fileID: 8300000, guid: 2fc06b4b9fd849c48a433d71f9fbe685, type: 3}
+  - {fileID: 8300000, guid: 48d3ad74f0e96ba4985ca2199f11d114, type: 3}
+  - {fileID: 8300000, guid: 2a03e0a30c4a22c468e18bc807b151b2, type: 3}
+  - {fileID: 8300000, guid: 51a0746b422db9744a419199c58b6339, type: 3}
   sfxAcertou:
   - {fileID: 8300000, guid: 01af47686af62174a9933c3383720bb9, type: 3}
+  ponto: {fileID: 3419549682400904797, guid: 3bed67743612d9c499ea7563bc0785bc, type: 3}
+  minVelocidadePt: 1
+  maxVelocidadePt: 2
 --- !u!136 &306676500809821189
 CapsuleCollider:
   m_ObjectHideFlags: 0

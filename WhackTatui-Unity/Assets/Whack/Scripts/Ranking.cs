@@ -5,8 +5,6 @@ using Firebase.Database;
 using Firebase.Extensions;
 using Utilidades;
 
-using UnityEngine;
-
 public static class Ranking
 {
     [Serializable]
@@ -28,8 +26,10 @@ public static class Ranking
     private static string txt;
 
     private static DatabaseReference dbRef = FirebaseDatabase.GetInstance("https://whack-tatui-320b9-default-rtdb.firebaseio.com/").RootReference;
-    
-    public static void Carregar()
+
+    public delegate void Del();
+
+    public static void Carregar(Del del)
     {
         dbRef.GetValueAsync().ContinueWithOnMainThread(task =>
         {
@@ -37,6 +37,8 @@ public static class Ranking
             {
                 if (jogadores == null) jogadores = new List<Jogador>();
                 jogadores = JsonHelper.FromJson<Jogador>(task.Result.GetRawJsonValue()).ToList();
+
+                if (del != null) del();
             }
             else
             {
@@ -58,7 +60,7 @@ public static class Ranking
         {
             if (task.IsCompleted)
             {
-                Carregar();
+                Carregar(null);
             }
             else
             {
