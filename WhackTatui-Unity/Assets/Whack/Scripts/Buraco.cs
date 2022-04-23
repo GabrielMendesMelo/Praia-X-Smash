@@ -12,7 +12,7 @@ public class Buraco : MonoBehaviour
     public void CriarInimigo()
     {
         Vector3 pos = gameObject.transform.position;
-        instInimigo = Instantiate(inimigo,  new Vector3(pos.x, pos.y + offsetY, pos.z), Quaternion.identity);
+        instInimigo = Instantiate(inimigo, new Vector3(pos.x, pos.y + offsetY, pos.z), Quaternion.identity, transform);
         ParticleSystem part = GetComponentInChildren<ParticleSystem>();
         part.Play();
         instInimigo.GetComponent<Inimigo>().setBuraco(gameObject);

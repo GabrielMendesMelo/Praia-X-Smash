@@ -77,12 +77,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a7d777a278ac9fd42818a675ed0a557b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  min: -1
-  max: 0
+  min: 0
+  max: 1.4
   velocidade: 4
   multiplicadorSubindo: 1.5
   multiplicadorDescendo: 2
-  minTempoNaTela: 0
+  minTempoNaTela: 0.1
   maxTempoNaTela: 3
   modelo: {fileID: 3368656821970322002}
   materiaisOpcoes:
@@ -101,7 +101,14 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 2a03e0a30c4a22c468e18bc807b151b2, type: 3}
   - {fileID: 8300000, guid: 51a0746b422db9744a419199c58b6339, type: 3}
   sfxAcertou:
-  - {fileID: 8300000, guid: 01af47686af62174a9933c3383720bb9, type: 3}
+  - {fileID: 8300000, guid: 2d20c9335b29fbc42a42b2be3f6df0ff, type: 3}
+  - {fileID: 8300000, guid: 5ff6e26a681dba84c9946aea12d37eec, type: 3}
+  - {fileID: 8300000, guid: 3091c864dbf7d6c42bad0ec16aa49778, type: 3}
+  - {fileID: 8300000, guid: a670a13c9aa8f45438397f6a4192ebfb, type: 3}
+  sfxAcertou2:
+  - {fileID: 8300000, guid: 99479f4c1b6d8df4a96a559dc43b77b9, type: 3}
+  - {fileID: 8300000, guid: a6af08c53460c894ba4a51624ddf8be5, type: 3}
+  - {fileID: 8300000, guid: 1ee13388698a1d24f9f25eaa25bbcef1, type: 3}
   ponto: {fileID: 3419549682400904797, guid: 3bed67743612d9c499ea7563bc0785bc, type: 3}
   minVelocidadePt: 1
   maxVelocidadePt: 2

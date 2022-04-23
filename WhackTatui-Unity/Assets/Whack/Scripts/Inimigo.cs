@@ -18,7 +18,8 @@ public class Inimigo : MonoBehaviour
     [SerializeField] private AudioMixerGroup sfxMixer;
     [SerializeField] private AudioClip[] sfxApareceu;
     [SerializeField] private AudioClip[] sfxAcertou;
-    private AudioSource[] sfxSrcs = new AudioSource[2];
+    [SerializeField] private AudioClip[] sfxAcertou2;
+    private AudioSource[] sfxSrcs = new AudioSource[3];
 
     [SerializeField] private GameObject ponto;
     private GameObject pt;
@@ -50,6 +51,7 @@ public class Inimigo : MonoBehaviour
 
         sfxSrcs[0].clip = sfxApareceu[Random.Range(0, sfxApareceu.Length)];
         sfxSrcs[1].clip = sfxAcertou[Random.Range(0, sfxAcertou.Length)];
+        sfxSrcs[2].clip = sfxAcertou2[Random.Range(0, sfxAcertou2.Length)];
 
         modelo.GetComponent<SkinnedMeshRenderer>().material = materiaisOpcoes[Random.Range(0, materiaisOpcoes.Length)];
         
@@ -116,6 +118,7 @@ public class Inimigo : MonoBehaviour
             }
             else if (transform.position.y < min)
             {
+                
                 buraco.GetComponentInChildren<MeshRenderer>().enabled = true;
                 buraco.GetComponent<Buraco>().Liberar();
                 
@@ -181,6 +184,7 @@ public class Inimigo : MonoBehaviour
         Combo.Aumentar();
 
         sfxSrcs[1].Play();
+        sfxSrcs[2].Play();
 
         anim.SetTrigger("acertou");
 
