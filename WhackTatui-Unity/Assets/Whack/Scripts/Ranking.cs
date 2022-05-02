@@ -5,105 +5,108 @@ using Firebase.Database;
 using Firebase.Extensions;
 using Utilidades;
 
-public static class Ranking
+namespace Antigo
 {
-    [Serializable]
-    public class Jogador
+    public static class Ranking
     {
-        public int pontos;
-        public string nome;
-
-        public Jogador(int pontos, string nome)
+        [Serializable]
+        public class Jogador
         {
-            this.pontos = pontos;
-            this.nome = nome;
-        }
-    }
+            public int pontos;
+            public string nome;
 
-    public const int MAX = 10;
-
-    public static List<Jogador> jogadores;
-    private static string txt;
-
-    private static DatabaseReference dbRef = FirebaseDatabase.GetInstance("https://whack-tatui-320b9-default-rtdb.firebaseio.com/").RootReference;
-
-    public delegate void Del();
-
-    public static void Carregar(Del del)
-    {
-        dbRef.GetValueAsync().ContinueWithOnMainThread(task =>
-        {
-            if (task.IsCompleted)
+            public Jogador(int pontos, string nome)
             {
-                if (jogadores == null) jogadores = new List<Jogador>();
-                jogadores = JsonHelper.FromJson<Jogador>(task.Result.GetRawJsonValue()).ToList();
-
-                if (del != null) del();
+                this.pontos = pontos;
+                this.nome = nome;
             }
-            else
-            {
-                throw new Exception("FirebaseDatabase.DatabaseReference.GetValueAsync(task => task.IsCompleted == false);");
-            }
-        });
-    }
-    
-    public static void Salvar()
-    {
-        if (jogadores.Count > MAX)
-        {
-            jogadores.RemoveAt(jogadores.Count - 1);
         }
 
-        txt = JsonHelper.ToJson(jogadores.ToArray(), true);
+        public const int MAX = 10;
 
-        dbRef.SetRawJsonValueAsync(txt).ContinueWithOnMainThread(task =>
+        public static List<Jogador> jogadores;
+        private static string txt;
+
+        private static DatabaseReference dbRef = FirebaseDatabase.GetInstance("https://whack-tatui-320b9-default-rtdb.firebaseio.com/").RootReference;
+
+        public delegate void Del();
+
+        public static void Carregar(Del del)
         {
-            if (task.IsCompleted)
+            dbRef.GetValueAsync().ContinueWithOnMainThread(task =>
             {
-                Carregar(null);
-            }
-            else
-            {
-                throw new Exception("FirebaseDatabase.DatabaseReference.GetValueAsync(task => task.IsCompleted == false);");
-            }
-        });
-    }
-
-    public static void Adicionar(int pontos, string nome)
-    {
-        Jogador jogador = new Jogador(pontos, nome.ToUpper());
-        jogadores.Add(jogador);
-        Ordenar();
-
-        Salvar();
-    }
-
-    private static void Ordenar()
-    {
-        int[] array = new int[jogadores.Count];
-
-        List<Jogador> copia = new List<Jogador>();
-
-        for (int i = 0; i < jogadores.Count; i++)
-        {
-            copia.Add(jogadores[i]);
-            array[i] = jogadores[i].pontos;
-        }
-
-        jogadores.Clear();
-
-        Ordenacao.HeapSort(array);
-
-        Array.Reverse(array, 0, array.Length);
-        
-        for (int i = 0; i < array.Length; i++)
-        {
-            for (int j = 0; j < copia.Count; j++)
-            {
-                if (copia[j].pontos == array[i])
+                if (task.IsCompleted)
                 {
-                    jogadores.Add(copia[j]);
-                    break;
+                    if (jogadores == null) jogadores = new List<Jogador>();
+                    jogadores = JsonHelper.FromJson<Jogador>(task.Result.GetRawJsonValue()).ToList();
+
+                    if (del != null) del();
+                }
+                else
+                {
+                    throw new Exception("FirebaseDatabase.DatabaseReference.GetValueAsync(task => task.IsCompleted == false);");
+                }
+            });
+        }
+
+        public static void Salvar()
+        {
+            if (jogadores.Count > MAX)
+            {
+                jogadores.RemoveAt(jogadores.Count - 1);
+            }
+
+            txt = JsonHelper.ToJson(jogadores.ToArray(), true);
+
+            dbRef.SetRawJsonValueAsync(txt).ContinueWithOnMainThread(task =>
+            {
+                if (task.IsCompleted)
+                {
+                    Carregar(null);
+                }
+                else
+                {
+                    throw new Exception("FirebaseDatabase.DatabaseReference.GetValueAsync(task => task.IsCompleted == false);");
+                }
+            });
+        }
+
+        public static void Adicionar(int pontos, string nome)
+        {
+            Jogador jogador = new Jogador(pontos, nome.ToUpper());
+            jogadores.Add(jogador);
+            Ordenar();
+
+            Salvar();
+        }
+
+        private static void Ordenar()
+        {
+            int[] array = new int[jogadores.Count];
+
+            List<Jogador> copia = new List<Jogador>();
+
+            for (int i = 0; i < jogadores.Count; i++)
+            {
+                copia.Add(jogadores[i]);
+                array[i] = jogadores[i].pontos;
+            }
+
+            jogadores.Clear();
+
+            Ordenacao.HeapSort(array);
+
+            Array.Reverse(array, 0, array.Length);
+
+            for (int i = 0; i < array.Length; i++)
+            {
+                for (int j = 0; j < copia.Count; j++)
+                {
+                    if (copia[j].pontos == array[i])
+                    {
+                        jogadores.Add(copia[j]);
+                        break;
+                    }
                 }
             }
         }

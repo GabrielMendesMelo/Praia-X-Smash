@@ -4,106 +4,109 @@ using UnityEngine;
 using UnityEngine.Audio;
 using UnityStandardAssets.Water;
 
-public static class PreferenciasUsuario
+namespace Antigo
 {
-    [Serializable]
-    public class Prefs
+    public static class PreferenciasUsuario
     {
-        public float musica;
-        public float sfx;
-        public int grafico;
-
-        public Prefs(float musica, float sfx, int grafico)
+        [Serializable]
+        public class Prefs
         {
-            this.musica = musica;
-            this.sfx = sfx;
-            this.grafico = grafico;
+            public float musica;
+            public float sfx;
+            public int grafico;
+
+            public Prefs(float musica, float sfx, int grafico)
+            {
+                this.musica = musica;
+                this.sfx = sfx;
+                this.grafico = grafico;
+            }
         }
-    }
 
-    private static string caminho = Application.persistentDataPath + "/prefs.json";
-    private static string txt;
-    private static Prefs prefs;
+        private static string caminho = Application.persistentDataPath + "/prefs.json";
+        private static string txt;
+        private static Prefs prefs;
 
-    private static AudioMixer musicaMixer;
-    private static AudioMixer sfxMixer;
-    private static WaterBase waterBase;
+        private static AudioMixer musicaMixer;
+        private static AudioMixer sfxMixer;
+        private static WaterBase waterBase;
 
-    public static float musica
-    {
-        get
+        public static float musica
         {
-            return prefs.musica;
+            get
+            {
+                return prefs.musica;
+            }
+            set
+            {
+                prefs.musica = value;
+                musicaMixer.SetFloat("Musica", Mathf.Log10(prefs.musica) * 20);
+
+                Salvar();
+            }
         }
-        set
+
+        public static float sfx
         {
-            prefs.musica = value;
+            get
+            {
+                return prefs.sfx;
+            }
+            set
+            {
+                prefs.sfx = value;
+                sfxMixer.SetFloat("SFX", Mathf.Log10(prefs.sfx) * 20);
+
+                Salvar();
+            }
+        }
+
+        public static int grafico
+        {
+            get
+            {
+                return prefs.grafico;
+            }
+            set
+            {
+                prefs.grafico = value;
+                QualitySettings.SetQualityLevel(prefs.grafico);
+                waterBase.waterQuality = (WaterQuality)prefs.grafico;
+
+                Salvar();
+            }
+        }
+
+        public static void Set(AudioMixerGroup musicaMixerGroup, AudioMixerGroup sfxMixerGroup, GameObject water)
+        {
+            musicaMixer = musicaMixerGroup.audioMixer;
+            sfxMixer = sfxMixerGroup.audioMixer;
+            waterBase = water.GetComponent<WaterBase>();
+
+            if (!File.Exists(caminho))
+            {
+                prefs = new Prefs(1, 1, QualitySettings.GetQualityLevel());
+
+                txt = JsonUtility.ToJson(prefs);
+            }
+            else
+            {
+                txt = File.ReadAllText(caminho);
+
+                prefs = JsonUtility.FromJson<Prefs>(txt);
+            }
+
             musicaMixer.SetFloat("Musica", Mathf.Log10(prefs.musica) * 20);
-
-            Salvar();
-        }
-    }
-
-    public static float sfx
-    {
-        get
-        {
-            return prefs.sfx;
-        }
-        set
-        {
-            prefs.sfx = value;
             sfxMixer.SetFloat("SFX", Mathf.Log10(prefs.sfx) * 20);
-
-            Salvar();
-        }
-    }
-
-    public static int grafico
-    {
-        get
-        {
-            return prefs.grafico;
-        }
-        set
-        {
-            prefs.grafico = value;
             QualitySettings.SetQualityLevel(prefs.grafico);
-            waterBase.waterQuality = (WaterQuality)prefs.grafico;
 
-            Salvar();
+            File.WriteAllText(caminho, txt);
         }
-    }
 
-    public static void Set(AudioMixerGroup musicaMixerGroup, AudioMixerGroup sfxMixerGroup, GameObject water)
-    {
-        musicaMixer = musicaMixerGroup.audioMixer;
-        sfxMixer = sfxMixerGroup.audioMixer;
-        waterBase = water.GetComponent<WaterBase>();
-
-        if (!File.Exists(caminho))
+        private static void Salvar()
         {
-            prefs = new Prefs(1, 1, QualitySettings.GetQualityLevel());
-
             txt = JsonUtility.ToJson(prefs);
+            File.WriteAllText(caminho, txt);
         }
-        else
-        {
-            txt = File.ReadAllText(caminho);
-
-            prefs = JsonUtility.FromJson<Prefs>(txt);
-        }
-
-        musicaMixer.SetFloat("Musica", Mathf.Log10(prefs.musica) * 20);
-        sfxMixer.SetFloat("SFX", Mathf.Log10(prefs.sfx) * 20);
-        QualitySettings.SetQualityLevel(prefs.grafico);
-
-        File.WriteAllText(caminho, txt);
-    }
-
-    private static void Salvar()
-    {
-        txt = JsonUtility.ToJson(prefs);
-        File.WriteAllText(caminho, txt);
     }
 }

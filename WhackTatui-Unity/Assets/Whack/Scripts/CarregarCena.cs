@@ -4,18 +4,21 @@ using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using TMPro;
 
-public static class CarregarCena
+namespace Antigo
 {
-    public static IEnumerator LoadAsync(int id, Slider slider, TextMeshProUGUI txt)
+    public static class CarregarCena
     {
-        AsyncOperation asyncLoad = SceneManager.LoadSceneAsync(id);
-
-        while (!asyncLoad.isDone)
+        public static IEnumerator LoadAsync(int id, Slider slider, TextMeshProUGUI txt)
         {
-            float progresso = Mathf.Clamp01(asyncLoad.progress / .9f);
-            slider.value = progresso;
-            txt.text = (int)(progresso * 100) + "%";
-            yield return null;
+            AsyncOperation asyncLoad = SceneManager.LoadSceneAsync(id);
+
+            while (!asyncLoad.isDone)
+            {
+                float progresso = Mathf.Clamp01(asyncLoad.progress / .9f);
+                slider.value = progresso;
+                txt.text = (int)(progresso * 100) + "%";
+                yield return null;
+            }
         }
     }
 }

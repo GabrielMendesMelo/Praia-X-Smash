@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 5970386086590705930}
   - component: {fileID: 3146036227129405484}
   - component: {fileID: 8377548990149051173}
+  - component: {fileID: 3682186850827985880}
   m_Layer: 5
   m_Name: Ponto
   m_TagString: Untagged
@@ -27,7 +28,7 @@ Transform:
   m_GameObject: {fileID: 3419549682400904797}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1.5, y: 1.5, z: 5.24}
+  m_LocalScale: {x: 2, y: 2, z: 0}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -81,7 +82,7 @@ TextMesh:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3419549682400904797}
-  m_Text: 0
+  m_Text: 10
   m_OffsetZ: 0
   m_CharacterSize: 0.01
   m_LineSpacing: 1
@@ -95,3 +96,21 @@ TextMesh:
   m_Color:
     serializedVersion: 2
     rgba: 4278876063
+--- !u!114 &3682186850827985880
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3419549682400904797}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1155ccba585800d47a07df96c0c8361e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  velocidade: 3
+  cores:
+  - {r: 0.8584906, g: 0.8375529, b: 0.48998755, a: 1}
+  - {r: 0.9245283, g: 0.7874395, b: 0.19624424, a: 1}
+  - {r: 0.8392157, g: 0.6428675, b: 0.105882324, a: 1}
+  - {r: 1, g: 0.06914891, b: 0, a: 1}

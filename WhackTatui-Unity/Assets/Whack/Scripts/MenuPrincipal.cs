@@ -9,206 +9,209 @@ using UnityEngine.Audio;
 using UnityEngine.UI;
 using TMPro;
 
-public class MenuPrincipal : MonoBehaviour
+namespace Antigo
 {
-    [SerializeField] private GameObject conteudoRanking;
-    [SerializeField] private GameObject conteudoPrefab;
-    private List<GameObject> jogadores = new List<GameObject>();
-
-    [SerializeField] private GameObject txtSemInternet;
-    [SerializeField] private GameObject txtRecarregar;
-
-    [SerializeField] private float distanciaY;
-
-    [SerializeField] private AudioMixerGroup musicaMixer;
-
-    [SerializeField] private GameObject gameObjAudioSource;
-    [SerializeField] private AudioClip musicaClip;
-    private AudioSource musicaSrc;
-      
-    [SerializeField] private bool fadeIn;
-    [SerializeField] private float tempoFadeIn;
-
-    [SerializeField] private AudioMixerGroup sfxMixer;
-
-    private AudioSource btnsSrc;
-    [SerializeField] private AudioClip btnComecarClip;
-    [SerializeField] private AudioClip btnAvançarClip;
-    [SerializeField] private AudioClip btnVoltarClip;
-
-    [SerializeField] private Slider musicaSlider;
-    [SerializeField] private Slider sfxSlider;
-    [SerializeField] private TMP_Dropdown graficosDd;
-
-    [SerializeField] private Slider loadSlider;
-    [SerializeField] private TextMeshProUGUI loadTxt;
-    [SerializeField] private GameObject mar;
-
-    private void Awake()
+    public class MenuPrincipal : MonoBehaviour
     {
-        CarregarRanking();
+        [SerializeField] private GameObject conteudoRanking;
+        [SerializeField] private GameObject conteudoPrefab;
+        private List<GameObject> jogadores = new List<GameObject>();
 
-        musicaSrc = gameObjAudioSource.GetComponent<AudioSource>();
-        musicaSrc.clip = musicaClip;
-        musicaSrc.outputAudioMixerGroup = musicaMixer;
-        musicaSrc.volume = fadeIn ? 0 : 1;
+        [SerializeField] private GameObject txtSemInternet;
+        [SerializeField] private GameObject txtRecarregar;
 
-        musicaSrc.Play();
+        [SerializeField] private float distanciaY;
 
-        btnsSrc = gameObjAudioSource.AddComponent<AudioSource>();
-        btnsSrc.outputAudioMixerGroup = sfxMixer;
+        [SerializeField] private AudioMixerGroup musicaMixer;
 
-        Combo.Set();
-    }
+        [SerializeField] private GameObject gameObjAudioSource;
+        [SerializeField] private AudioClip musicaClip;
+        private AudioSource musicaSrc;
 
-    private void Start()
-    {
-        PreferenciasUsuario.Set(musicaMixer, sfxMixer, mar);
+        [SerializeField] private bool fadeIn;
+        [SerializeField] private float tempoFadeIn;
 
-        musicaSlider.value = PreferenciasUsuario.musica;
-        musicaSlider.onValueChanged.AddListener(delegate { MudancaDeMusica(); });
+        [SerializeField] private AudioMixerGroup sfxMixer;
 
-        sfxSlider.value = PreferenciasUsuario.sfx;
-        sfxSlider.onValueChanged.AddListener(delegate { MudancaDeSfx(); });
+        private AudioSource btnsSrc;
+        [SerializeField] private AudioClip btnComecarClip;
+        [SerializeField] private AudioClip btnAvançarClip;
+        [SerializeField] private AudioClip btnVoltarClip;
 
-        graficosDd.value = PreferenciasUsuario.grafico;
-        graficosDd.onValueChanged.AddListener(delegate { MudancaDeGrafico(); });
-    }
+        [SerializeField] private Slider musicaSlider;
+        [SerializeField] private Slider sfxSlider;
+        [SerializeField] private TMP_Dropdown graficosDd;
 
-    private void Update()
-    {
-        if (fadeIn && musicaSrc.volume <= 1)
+        [SerializeField] private Slider loadSlider;
+        [SerializeField] private TextMeshProUGUI loadTxt;
+        [SerializeField] private GameObject mar;
+
+        private void Awake()
         {
-            musicaSrc.volume += (float)(Time.deltaTime / tempoFadeIn);
+            CarregarRanking();
+
+            musicaSrc = gameObjAudioSource.GetComponent<AudioSource>();
+            musicaSrc.clip = musicaClip;
+            musicaSrc.outputAudioMixerGroup = musicaMixer;
+            musicaSrc.volume = fadeIn ? 0 : 1;
+
+            musicaSrc.Play();
+
+            btnsSrc = gameObjAudioSource.AddComponent<AudioSource>();
+            btnsSrc.outputAudioMixerGroup = sfxMixer;
+
+            Combo.Set(10);
         }
-    }
-    
-    public void ComecarJogo()
-    {
-        btnsSrc.clip = btnComecarClip;
-        btnsSrc.Play();
-        StartCoroutine(CarregarCena.LoadAsync(SceneManager.GetActiveScene().buildIndex + 1, loadSlider, loadTxt));
-    }
 
-    public void AbrirMenu(GameObject menu)
-    {
-        btnsSrc.clip = btnAvançarClip;
-        btnsSrc.Play();
-        menu.SetActive(true);
-    }
-
-    public void FecharMenu(GameObject menu)
-    {
-        btnsSrc.clip = btnVoltarClip;
-        btnsSrc.Play();
-        menu.SetActive(false);
-    }
-
-    public void GitHub()
-    {
-        Application.OpenURL("https://github.com/GabrielMendesMelo/Whack-Tatui-Unity");
-    }
-
-    public void Sair()
-    {
-        Application.Quit();
-    }
-
-    private IEnumerator ChecarConexao(Action<bool> action)
-    {
-        UnityWebRequest request = new UnityWebRequest("http://google.com");
-        yield return request.SendWebRequest();
-        if (request.error != null)
+        private void Start()
         {
-            action(false);
+            PreferenciasUsuario.Set(musicaMixer, sfxMixer, mar);
+
+            musicaSlider.value = PreferenciasUsuario.musica;
+            musicaSlider.onValueChanged.AddListener(delegate { MudancaDeMusica(); });
+
+            sfxSlider.value = PreferenciasUsuario.sfx;
+            sfxSlider.onValueChanged.AddListener(delegate { MudancaDeSfx(); });
+
+            graficosDd.value = PreferenciasUsuario.grafico;
+            graficosDd.onValueChanged.AddListener(delegate { MudancaDeGrafico(); });
         }
-        else
-        {
-            action(true);
-        }
-    }
 
-    private void CarregarRanking()
-    {
-        StartCoroutine(ChecarConexao(conectado =>
+        private void Update()
         {
-            if (conectado)
+            if (fadeIn && musicaSrc.volume <= 1)
             {
-                txtSemInternet.SetActive(false);
-                conteudoRanking.SetActive(true);
-             
-                Ranking.Carregar(null);
+                musicaSrc.volume += (float)(Time.deltaTime / tempoFadeIn);
+            }
+        }
 
-                if (Ranking.jogadores == null) txtRecarregar.SetActive(true);
-                else txtRecarregar.SetActive(false);
+        public void ComecarJogo()
+        {
+            btnsSrc.clip = btnComecarClip;
+            btnsSrc.Play();
+            StartCoroutine(CarregarCena.LoadAsync(SceneManager.GetActiveScene().buildIndex + 1, loadSlider, loadTxt));
+        }
+
+        public void AbrirMenu(GameObject menu)
+        {
+            btnsSrc.clip = btnAvançarClip;
+            btnsSrc.Play();
+            menu.SetActive(true);
+        }
+
+        public void FecharMenu(GameObject menu)
+        {
+            btnsSrc.clip = btnVoltarClip;
+            btnsSrc.Play();
+            menu.SetActive(false);
+        }
+
+        public void GitHub()
+        {
+            Application.OpenURL("https://github.com/GabrielMendesMelo/Whack-Tatui-Unity");
+        }
+
+        public void Sair()
+        {
+            Application.Quit();
+        }
+
+        private IEnumerator ChecarConexao(Action<bool> action)
+        {
+            UnityWebRequest request = new UnityWebRequest("http://google.com");
+            yield return request.SendWebRequest();
+            if (request.error != null)
+            {
+                action(false);
             }
             else
             {
-                txtSemInternet.SetActive(true);
-                conteudoRanking.SetActive(false);
-
-                throw new Exception("Conexão falhou!");
+                action(true);
             }
-        }));
-    }
-
-    public void BtnAtualizar()
-    {
-        AtualizarRanking();
-        btnsSrc.clip = btnAvançarClip;
-        btnsSrc.Play();
-    }
-
-    public void AtualizarRanking()
-    {
-        conteudoRanking.SetActive(true);
-        txtSemInternet.SetActive(false);
-
-        if (Ranking.jogadores == null) txtRecarregar.SetActive(true);
-        else txtRecarregar.SetActive(false);
-        
-        foreach (GameObject g in jogadores)
-        {
-            Destroy(g);
         }
-        jogadores.Clear();
-        CarregarRanking();
 
-        if (Ranking.jogadores != null)
+        private void CarregarRanking()
         {
-            for (int i = 0; i < Ranking.jogadores.Count; i++)
+            StartCoroutine(ChecarConexao(conectado =>
             {
-                Ranking.Jogador j = Ranking.jogadores[i];
+                if (conectado)
+                {
+                    txtSemInternet.SetActive(false);
+                    conteudoRanking.SetActive(true);
 
-                CriarTexto(i, j.nome, j.pontos);
+                    Ranking.Carregar(null);
+
+                    if (Ranking.jogadores == null) txtRecarregar.SetActive(true);
+                    else txtRecarregar.SetActive(false);
+                }
+                else
+                {
+                    txtSemInternet.SetActive(true);
+                    conteudoRanking.SetActive(false);
+
+                    throw new Exception("Conexão falhou!");
+                }
+            }));
+        }
+
+        public void BtnAtualizar()
+        {
+            AtualizarRanking();
+            btnsSrc.clip = btnAvançarClip;
+            btnsSrc.Play();
+        }
+
+        public void AtualizarRanking()
+        {
+            conteudoRanking.SetActive(true);
+            txtSemInternet.SetActive(false);
+
+            if (Ranking.jogadores == null) txtRecarregar.SetActive(true);
+            else txtRecarregar.SetActive(false);
+
+            foreach (GameObject g in jogadores)
+            {
+                Destroy(g);
+            }
+            jogadores.Clear();
+            CarregarRanking();
+
+            if (Ranking.jogadores != null)
+            {
+                for (int i = 0; i < Ranking.jogadores.Count; i++)
+                {
+                    Ranking.Jogador j = Ranking.jogadores[i];
+
+                    CriarTexto(i, j.nome, j.pontos);
+                }
             }
         }
-    }
 
-    private void CriarTexto(int id, string nome, int pontos)
-    {
-        GameObject gO = Instantiate(conteudoPrefab, conteudoRanking.transform);
-        jogadores.Add(gO);
-        gO.name = id + "_" + nome + "_" + pontos;
-        gO.transform.localPosition = Vector3.up * (390 - (distanciaY + (id * distanciaY)));
-        InstanciaRank iR = gO.GetComponent<InstanciaRank>();
+        private void CriarTexto(int id, string nome, int pontos)
+        {
+            GameObject gO = Instantiate(conteudoPrefab, conteudoRanking.transform);
+            jogadores.Add(gO);
+            gO.name = id + "_" + nome + "_" + pontos;
+            gO.transform.localPosition = Vector3.up * (390 - (distanciaY + (id * distanciaY)));
+            InstanciaRank iR = gO.GetComponent<InstanciaRank>();
 
-        iR.Id = id + 1;
-        iR.Nome = nome;
-        iR.Pontos = pontos;
-    }
+            iR.Id = id + 1;
+            iR.Nome = nome;
+            iR.Pontos = pontos;
+        }
 
-    private void MudancaDeMusica()
-    {
-        PreferenciasUsuario.musica = musicaSlider.value;
-    }
-    private void MudancaDeSfx()
-    {
-        PreferenciasUsuario.sfx = sfxSlider.value;
-    }
+        private void MudancaDeMusica()
+        {
+            PreferenciasUsuario.musica = musicaSlider.value;
+        }
+        private void MudancaDeSfx()
+        {
+            PreferenciasUsuario.sfx = sfxSlider.value;
+        }
 
-    private void MudancaDeGrafico()
-    {
-        PreferenciasUsuario.grafico = graficosDd.value;
+        private void MudancaDeGrafico()
+        {
+            PreferenciasUsuario.grafico = graficosDd.value;
+        }
     }
 }
