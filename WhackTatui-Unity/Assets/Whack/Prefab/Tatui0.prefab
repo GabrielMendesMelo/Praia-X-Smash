@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 3525867859410968675}
   - component: {fileID: 8377264007974248358}
   - component: {fileID: 5594713347759173514}
+  - component: {fileID: -1240009931717585237}
   - component: {fileID: 3612781714843546241}
   - component: {fileID: 3526923997136226109}
   - component: {fileID: 8396084104341775310}
@@ -75,7 +76,7 @@ MonoBehaviour:
   loop: 0
   tocarAoIniciar: 0
   delayInicio: 0
---- !u!114 &3612781714843546241
+--- !u!114 &-1240009931717585237
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -84,7 +85,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 493781574496973728}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3b46ccc8b7f794d469c1fafc36fa8b29, type: 3}
+  m_Script: {fileID: 11500000, guid: 1e6377078d106ed418165b74ac3c7c48, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   velocidadeMin: 4
@@ -93,7 +94,7 @@ MonoBehaviour:
   variacaoVelocidadeDescendo: 2
   posMin: -1.5
   posMax: 0.05
-  tempoParadoMin: 0.1
+  tempoParadoMin: 2
   tempoParadoMax: 3
   tempoAEsperarAoSerAcertado: 0.6
   acertouEfeito: {fileID: 6236533574750117248, guid: e282379e023795a44af4b971c9f7ae4f,
@@ -110,6 +111,19 @@ MonoBehaviour:
   pontosEfeito: {fileID: 3419549682400904797, guid: 65ca4eb8cdf61404da769c295416b700,
     type: 3}
   mostrarPontosAPartirDe: 5
+  multPontos: 1
+--- !u!114 &3612781714843546241
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 493781574496973728}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3b46ccc8b7f794d469c1fafc36fa8b29, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!136 &3526923997136226109
 CapsuleCollider:
   m_ObjectHideFlags: 0

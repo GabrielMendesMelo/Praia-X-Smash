@@ -293,7 +293,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   txtPontos: {fileID: 2262808530547009548}
   maxPontosPorAcerto: 10
-  comboIncremento: 10
+  taxaComboIncremento: 10
 --- !u!4 &666824596 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 601972954352823064, guid: f431d78aaf71f814a86065cd5692da56,
@@ -1348,7 +1348,7 @@ GameObject:
   - component: {fileID: 1866108972}
   - component: {fileID: 1866108970}
   m_Layer: 5
-  m_Name: Interface
+  m_Name: Canvas
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1805,6 +1805,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2096660420}
   - component: {fileID: 2096660419}
+  - component: {fileID: 2096660422}
   - component: {fileID: 2096660421}
   m_Layer: 0
   m_Name: Partida
@@ -1867,19 +1868,42 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ca29c54e326f0c84e9e7e3c555c378fc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  tempoMinEntreTatuis: 0.5
-  tempoMaxEntreTatuis: 2
-  minTatuisAoMesmoTempo: 1
-  maxTatuisAoMesmoTempo: 2
-  tatuis:
-  - {fileID: 493781574496973728, guid: c0fd56692dee98b46bb391b18e6cbaf7, type: 3}
-  - {fileID: 5371561594709561579, guid: c36241f8451acb940b40eb54587bad17, type: 3}
-  - {fileID: 5371561594709561579, guid: c3bc8563ba5baae49ae22bdac54c9567, type: 3}
-  - {fileID: 5371561594709561579, guid: a622ab0a34a238246939086844a0aa92, type: 3}
-  - {fileID: 5371561594709561579, guid: cbd9297e1d2c1984a806711f36be30a1, type: 3}
-  - {fileID: 5371561594709561579, guid: a216979d6545a24418446aeff9344c15, type: 3}
   fimDeJogo: {fileID: 7114192290530348858, guid: 365c39a5f180a624781d1ec84ca19a04,
     type: 3}
+--- !u!114 &2096660422
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2096660418}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9c5cd8e2960a1b440930f01f4cf851d7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  tatuis:
+  - {fileID: 493781574496973728, guid: c0fd56692dee98b46bb391b18e6cbaf7, type: 3}
+  - {fileID: 493781574496973728, guid: c0fd56692dee98b46bb391b18e6cbaf7, type: 3}
+  - {fileID: 493781574496973728, guid: c0fd56692dee98b46bb391b18e6cbaf7, type: 3}
+  - {fileID: 493781574496973728, guid: c0fd56692dee98b46bb391b18e6cbaf7, type: 3}
+  - {fileID: 493781574496973728, guid: c0fd56692dee98b46bb391b18e6cbaf7, type: 3}
+  - {fileID: 5371561594709561579, guid: a622ab0a34a238246939086844a0aa92, type: 3}
+  - {fileID: 5371561594709561579, guid: a622ab0a34a238246939086844a0aa92, type: 3}
+  - {fileID: 5371561594709561579, guid: a622ab0a34a238246939086844a0aa92, type: 3}
+  - {fileID: 5371561594709561579, guid: a622ab0a34a238246939086844a0aa92, type: 3}
+  - {fileID: 5371561594709561579, guid: c3bc8563ba5baae49ae22bdac54c9567, type: 3}
+  - {fileID: 5371561594709561579, guid: c3bc8563ba5baae49ae22bdac54c9567, type: 3}
+  - {fileID: 5371561594709561579, guid: c3bc8563ba5baae49ae22bdac54c9567, type: 3}
+  - {fileID: 5371561594709561579, guid: c36241f8451acb940b40eb54587bad17, type: 3}
+  - {fileID: 5371561594709561579, guid: c36241f8451acb940b40eb54587bad17, type: 3}
+  - {fileID: 5371561594709561579, guid: a216979d6545a24418446aeff9344c15, type: 3}
+  - {fileID: 5371561594709561579, guid: a216979d6545a24418446aeff9344c15, type: 3}
+  - {fileID: 5371561594709561579, guid: cbd9297e1d2c1984a806711f36be30a1, type: 3}
+  tempoMinEntreTatuis: 0
+  tempoMaxEntreTatuis: 3
+  minTatuisAoMesmoTempo: 1
+  maxTatuisAoMesmoTempo: 2
 --- !u!1 &97577407331396203
 GameObject:
   m_ObjectHideFlags: 0
@@ -3993,7 +4017,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   tempoInicial: 60
-  tempoFinal: 0
+  tempoFinal: 10
   txtTempo: {fileID: 2262808531084395399}
   aoAcabarTempo:
     m_PersistentCalls:
@@ -4635,8 +4659,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e010badf9cd2bee49881feca5d324551, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  carregandoCena: {fileID: 6985879435356367137, guid: 59a650c87a1c8804d8a2940d95308a30,
-    type: 3}
+  carregandoCenaAnimacao: {fileID: 0}
 --- !u!4 &2342263106982235013
 Transform:
   m_ObjectHideFlags: 0
