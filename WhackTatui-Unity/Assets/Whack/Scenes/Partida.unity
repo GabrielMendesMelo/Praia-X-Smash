@@ -4659,7 +4659,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e010badf9cd2bee49881feca5d324551, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  carregandoCenaAnimacao: {fileID: 0}
+  carregandoCenaAnimacao: {fileID: 6985879435356367137, guid: 59a650c87a1c8804d8a2940d95308a30,
+    type: 3}
 --- !u!4 &2342263106982235013
 Transform:
   m_ObjectHideFlags: 0
