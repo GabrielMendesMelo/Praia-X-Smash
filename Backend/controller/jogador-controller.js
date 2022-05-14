@@ -11,7 +11,7 @@ const getJogadores = async (req, res, next) => {
         .find()
         .sort({ pontuacao: -1});
     } catch (e) {
-        return next (new HttpError('Encontrar jogadores falhou. Tente novamente mais tarde.', 500));
+        return next (new HttpError('GET: Jogador.find() falhou', 500));
     }
 
     try {
@@ -21,7 +21,7 @@ const getJogadores = async (req, res, next) => {
             }
         }    
     } catch (e) {
-        return next(new HttpError('Algo deu errado ao limitar o ranking. Tente novamente mais tarde.', 500));
+        return next(new HttpError('GET: Jogador.remove() falhou', 500));
     }
             
     res.json({ jogadores: jogadores.map(jogador => jogador.toObject({ getters: true })) });
@@ -38,7 +38,7 @@ const addJogador = async (req, res, next) => {
     try {
         await jogadorCriado.save();
     } catch (e) {
-        return next(new HttpError('Não foi possível adicionar jogador. Tente novamente mais tarde.', 500));
+        return next(new HttpError('POST: Jogador.save() falhou', 500));
     }
 
     res.status(201).json({
