@@ -2,8 +2,6 @@
 
 Jogo estilo Whack-A-Mole feito em Unity.
 
-Link para o jogo na play store: 
-
 #### Assets de terceiros:
 
 Texturas de areia:
