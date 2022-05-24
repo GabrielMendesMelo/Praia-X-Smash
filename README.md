@@ -4,7 +4,7 @@ Texturas de areia:
 * https://pxhere.com/en/photo/1266862
 * https://www.flickr.com/photos/dietmardownunder/3645776621/in/photostream/
 
-Som ambiente de praia e efeitos relativos ao Tatuí da partida:
+Som ambiente de praia e efeitos sonoros relativos ao Tatuí da partida:
 * https://www.fesliyanstudios.com/
 * https://mixkit.co/
 
