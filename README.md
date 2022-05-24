@@ -1,5 +1,11 @@
 # Whack Tatui Unity
 
+Jogo estilo Whack-A-Mole feito em Unity.
+
+Link para o jogo na play store: 
+
+## Assets de terceiros:
+
 Texturas de areia:
 * https://pxhere.com/en/photo/1266862
 * https://www.flickr.com/photos/dietmardownunder/3645776621/in/photostream/
