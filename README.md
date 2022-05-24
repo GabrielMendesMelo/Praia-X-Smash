@@ -4,13 +4,6 @@ Jogo estilo Whack-A-Mole feito em Unity.
 
 Link para o jogo na play store: 
 
-#### Tecnologias utilizadas:
-* Unity
-* Blender
-* Cakewalk
-* MongoDB
-* Node Express.js
-
 #### Assets de terceiros:
 
 Texturas de areia:
