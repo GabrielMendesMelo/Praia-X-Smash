@@ -1,10 +1,18 @@
-# Praia X Smash em Unity
+# Praia X Smash
 
 Jogo estilo Whack-A-Mole feito em Unity para Android.
 
-Baixe o .apk para 
+## Instalação
 
-**Assets de terceiros:**
+Baixe o whack.apk [clicando aqui](https://github.com/GabrielMendesMelo/Praia-X-Smash/raw/main/whack.apk) para jogar em um celular Android.
+
+### Assets próprios
+
+Modelos 3D: https://sketchfab.com/gabrielmendesm/collections/whacktatui
+
+Áudios: https://soundcloud.com/user-737318407/albums
+
+### Assets de terceiros:
 
 Texturas de areia:
 * https://pxhere.com/en/photo/1266862
