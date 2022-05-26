@@ -1,8 +1,10 @@
-# Whack Tatui Unity
+# Praia X Smash em Unity
 
-Jogo estilo Whack-A-Mole feito em Unity.
+Jogo estilo Whack-A-Mole feito em Unity para Android.
 
-#### Assets de terceiros:
+Baixe o .apk para 
+
+**Assets de terceiros:**
 
 Texturas de areia:
 * https://pxhere.com/en/photo/1266862
